@@ -1,10 +1,16 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #define INPUT_WIDTH 1024
 
 
+
+
+
+
 char input[INPUT_WIDTH] = "";
+char baseNumber[INPUT_WIDTH] = "";
 int bufferState = false;
 
 
@@ -12,9 +18,6 @@ typedef struct{
     int input, output;
 }Bases;
 
-
-Bases bases;
-bases = {0, 0};
 
 
 void appendChar(char *destination, char source){
@@ -33,6 +36,8 @@ bool isAllNumeric(char * input){
         }
     }
 }
+
+
 
 bool isEmpty(char * input){
     return (input[0])? false : true;
@@ -53,32 +58,65 @@ void flushInput(char * input){
     bufferState = false;
 }
 
-Bases getInputAndOutputBase(){
+Bases getInputAndOutputBase(Bases bases){
+    bool status = true;
+
+    while(status){
+        printf("Please enter current base of number\n");
+        getInput(input);
+        if(isAllNumeric(input) && (!isEmpty(input)) && atoi(input) != 0){
+            bases.input = atoi(input);
+            flushInput(input);
+            status = false;
+        }else{
+            printf("Check your entry again? must be a valid number base\n");
+            flushInput(input);
+        }
+    }
+    status = true;
+    while(status){
+        printf("Enter base you would like to convert to \n");
+        getInput(input);
+        if(isAllNumeric(input) && (!isEmpty(input)) && atoi(input) != 0){
+            bases.output = atoi(input);
+            flushInput(input);
+            status = false;
+        }else{
+            printf("Check your entry again? must be a valid number base\n");
+            flushInput(input);
+        }    
+    }
+    return bases;
+}
+
+void getNumber(char *baseNumber){
+    printf("Please Enter your base number\n");
+    getInput(baseNumber);
+}
 
 
-    // while()
-
-    printf("Please enter current base of number\n");
-    getInput(input);
-    if(isAllNumeric(input) && (!isEmpty(input)) && atoi(input) != 0){
-
+char toBaseTen(char *baseNumber){
+    int val;
+    char ch;
+    for (int i =0; i < strlen(baseNumber); i++){
+        ch = baseNumber[i];
+        if (ch )
     }
 }
 
+
 int main(){
+    Bases b;
 
-    int numericTest, emptyTest;
-    printf("Please enter something into the terminal\n");
+    printf("Welcome to this program to convert numbers from one"  
+    " base to another. Kindly follow the prompt and you are good to go!\n"
+    );
 
-    getInput(input);
-    printf("What you entered into the terminal is: \"%s\"\n", input);
-    numericTest = isAllNumeric(input);
-    emptyTest = isEmpty(input);
-    printf("Is your entry empty?: %s\n", emptyTest? "true": "false");
-    printf("Is what you entered all numeric?: %s\n", numericTest ? "true": "false");
-    flushInput(input);
-    printf("The input has now been emptied, the content is: %s, the length is %d\n", input, strlen(input));
+    Bases bases = getInputAndOutputBase(b);
+    printf("You wanna convert from base %d to base %d\n", bases.input, bases.output);
+    getNumber(baseNumber);
+    printf("%s in base %d is =========> x\n", baseNumber, bases.output);
 
- 
+
    return 0; 
 }
