@@ -16,7 +16,7 @@ char baseNumber[INPUT_WIDTH] = "";
 int bufferState = false;
 int hexmapOffSet = 6; 
 int errorStatus = 0;
-int baseNumberValid = false;
+char desiredBase[INPUT_WIDTH] = "";
 
 
 typedef struct{
@@ -130,28 +130,46 @@ int toBaseTen(char *baseNumber, Bases b){
     return val;
 }
 
-bool isBaseNumberValid(Bases b){
-    
+bool isBaseNumberValid(char * baseNumber, Bases b){
+    char ch[1] = "";
+    for(int i = 0; i < strlen(baseNumber); i++){
+        ch[0] = baseNumber[i];
+        if((b.input == 16) && (isalpha(ch[0]))){
+            if (!((ch[0] >= 'a' && ch[0] <= 'f')||(ch[0] >= 'A' && ch[0] <= 'F'))){
+                return false;
+            }
+        }else if(atoi(ch) >= b.input){
+            return false;
+        }
+    }
+    return true;
 }
 
 
+convertBase();
+
 int main(){
-    // Bases b;
-
-    // printf("Welcome to this program to convert numbers from one"  
-    // " base to another. Kindly follow the prompt and you are good to go!\n"
-    // );
-
-    // Bases bases = getInputAndOutputBase(b);
-    // printf("You wanna convert from base %d to base %d\n", bases.input, bases.output);
-    // getNumber(baseNumber);
-    // printf("%s in base %d is =========> x\n", baseNumber, bases.output);
     Bases b;
-    b.input = 16;
-    b.output = 10;
-    char bn[10] = "A24";
 
-    printf("%s, is %d in base 10", bn, toBaseTen(bn, b));
+    printf("Welcome to this program to convert numbers from one"  
+    " base to another. Kindly follow the prompt and you are good to go!\n"
+    );
+
+    Bases bases = getInputAndOutputBase(b);
+    printf("You wanna convert from base %d to base %d\n", bases.input, bases.output);
+    getNumber(baseNumber);
+    while (isBaseNumberValid(baseNumber, bases)==false){
+        printf("The number you have entered is not a valid number in base %d\n", bases.input);
+        flushInput(baseNumber);
+        getNumber(baseNumber);
+    }
+    printf("%s in base %d is =========> x\n", baseNumber, bases.output);
+    // Bases b;
+    // b.input = 16;
+    // b.output = 10;
+    // char bn[10] = "A24";
+
+    // printf("%s, is %d in base 10", bn, toBaseTen(bn, b));
 
 
    return 0; 
