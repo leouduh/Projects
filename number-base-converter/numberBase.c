@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <ctype.h>
+#include <math.h>
 #define INPUT_WIDTH 1024
 
 
@@ -12,11 +14,30 @@
 char input[INPUT_WIDTH] = "";
 char baseNumber[INPUT_WIDTH] = "";
 int bufferState = false;
+int hexmapOffSet = 6; 
+int errorStatus = 0;
+int baseNumberValid = false;
 
 
 typedef struct{
     int input, output;
 }Bases;
+
+char hexmap[6] = {
+    'a', 'b', 'c', 'd', 'e', 'f',
+};
+
+int hexValues[6] = {
+    10, 11, 12, 13, 14, 15
+};
+
+int hexmapValue(char hexCharacter){
+    for(int i=0; i < 6; i++){
+        if((hexmap[i] == hexCharacter)|| (hexmap[i] == tolower(hexCharacter))){
+            return hexValues[i];
+        }
+    }
+}
 
 
 
@@ -95,27 +116,42 @@ void getNumber(char *baseNumber){
 }
 
 
-char toBaseTen(char *baseNumber){
-    int val;
-    char ch;
-    for (int i =0; i < strlen(baseNumber); i++){
-        ch = baseNumber[i];
-        if (ch )
+int toBaseTen(char *baseNumber, Bases b){
+    int val = 0;
+    char ch[1] = "";
+    for (int i = 0;  i < strlen(baseNumber) ; i++){
+        ch[0] = baseNumber[i];
+        if ((ch[0] >= 'a' && ch[0] <= 'f')||(ch[0] >= 'A' && ch[0] <= 'F')){
+            val += hexmapValue(ch[0]) * (int)pow(b.input, strlen(baseNumber)-i-1);
+        }else{
+            val += atoi(ch) * (int)pow(b.input, strlen(baseNumber) - i-1);
+        }
     }
+    return val;
+}
+
+bool isBaseNumberValid(Bases b){
+    
 }
 
 
 int main(){
+    // Bases b;
+
+    // printf("Welcome to this program to convert numbers from one"  
+    // " base to another. Kindly follow the prompt and you are good to go!\n"
+    // );
+
+    // Bases bases = getInputAndOutputBase(b);
+    // printf("You wanna convert from base %d to base %d\n", bases.input, bases.output);
+    // getNumber(baseNumber);
+    // printf("%s in base %d is =========> x\n", baseNumber, bases.output);
     Bases b;
+    b.input = 16;
+    b.output = 10;
+    char bn[10] = "A24";
 
-    printf("Welcome to this program to convert numbers from one"  
-    " base to another. Kindly follow the prompt and you are good to go!\n"
-    );
-
-    Bases bases = getInputAndOutputBase(b);
-    printf("You wanna convert from base %d to base %d\n", bases.input, bases.output);
-    getNumber(baseNumber);
-    printf("%s in base %d is =========> x\n", baseNumber, bases.output);
+    printf("%s, is %d in base 10", bn, toBaseTen(bn, b));
 
 
    return 0; 
