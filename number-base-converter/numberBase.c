@@ -242,6 +242,7 @@ int main(){
                 innerProgramStatus = false;
             }else{
                 printf("Please enter a valid response 'Y' or 'no'\n");
+                flushinput(input);
             }
         }
         flushInput(baseNumber);
