@@ -11,7 +11,8 @@ char input[INPUT_WIDTH] = "";
 char baseNumber[INPUT_WIDTH] = "";
 int bufferState = false;
 int hexmapOffSet = 6; 
-int errorStatus = 0;
+bool programStatus = true;
+bool innerProgramStatus = true;
 char desiredNumStream[INPUT_WIDTH] = "";
 
 
@@ -158,7 +159,7 @@ bool isBaseNumberValid(char * baseNumber, Bases b){
             if (!((ch[0] >= 'a' && ch[0] <= reverseHexmapValue(b.input))||(ch[0] >= 'A' && ch[0] <= toupper(reverseHexmapValue(b.input))))){
                 return false;
             }
-        }else if(atoi(ch) >= b.input){
+        }else if(atoi(ch) >= b.input &&  isdigit(ch[0])){
             return false;
         }
     }
@@ -210,21 +211,44 @@ int main(){
     "Kindly follow the prompt and you are good to go!\n"
     );
 
-    Bases bases = getInputAndOutputBase(b);
-    printf("You wanna convert from base %d to base %d\n", bases.input, bases.output);
-    getNumber(baseNumber);
-    while (isBaseNumberValid(baseNumber, bases)==false){
-        printf("The number you have entered is not a valid number in base %d\n", bases.input);
-        flushInput(baseNumber);
+    while(programStatus){
+        
+        Bases bases = getInputAndOutputBase(b);
+        printf("You wanna convert from base %d to base %d\n", bases.input, bases.output);
         getNumber(baseNumber);
+        while (isBaseNumberValid(baseNumber, bases)==false){
+            printf("The number you have entered is not a valid number in base %d\n", bases.input);
+            flushInput(baseNumber);
+            getNumber(baseNumber);
+        }
+        DesiredBase ans = convertBase(baseNumber, bases, bases.input);
+        if (bases.output == 10){
+            printf("%s (base %d) is ================> %d (base %d)\n", baseNumber, bases.input,  ans.baseTen, bases.output);
+        }
+        else{
+            printf("%s (base %d) is ================> %s (base %d)\n", baseNumber, bases.input, ans.otherBases, bases.output);    
+        }
+
+        while (innerProgramStatus){
+            //Determines if the program reruns or not.
+            printf("\n\n Would you like to run the converter again? Press Y/N:\n");
+            getInput(input);
+            if ('y' == input[0] || 'Y' == input[0]){
+                innerProgramStatus = false;
+            }
+            else if ('N' == input[0] || 'n' == input[0]){
+                programStatus = false;
+                innerProgramStatus = false;
+            }else{
+                printf("Please enter a valid response 'Y' or 'no'\n");
+            }
+        }
+        flushInput(baseNumber);
+        flushInput(input);
+    innerProgramStatus = true;
     }
-    DesiredBase ans = convertBase(baseNumber, bases, bases.input);
-    if (bases.output == 10){
-        printf("%s (base %d) is ================> %d (base %d)\n", baseNumber, bases.input,  ans.baseTen, bases.output);
-    }
-    else{
-        printf("%s (base %d) is ================> %s (base %d)\n", baseNumber, bases.input, ans.otherBases, bases.output);    
-    }
+        
+    printf("************ Exiting Program **********************\n\n\n");
 
    return 0; 
 }
