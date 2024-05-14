@@ -7,8 +7,6 @@
 #define INPUT_WIDTH 1024
 
 
-
-
 char input[INPUT_WIDTH] = "";
 char baseNumber[INPUT_WIDTH] = "";
 int bufferState = false;
