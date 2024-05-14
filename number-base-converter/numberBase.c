@@ -154,8 +154,8 @@ bool isBaseNumberValid(char * baseNumber, Bases b){
     char ch[1] = "";
     for(int i = 0; i < strlen(baseNumber); i++){
         ch[0] = baseNumber[i];
-        if((b.input == 16) && (isalpha(ch[0]))){
-            if (!((ch[0] >= 'a' && ch[0] <= 'f')||(ch[0] >= 'A' && ch[0] <= 'F'))){
+        if((b.input > 10) && (isalpha(ch[0]))){
+            if (!((ch[0] >= 'a' && ch[0] <= reverseHexmapValue(b.input))||(ch[0] >= 'A' && ch[0] <= toupper(reverseHexmapValue(b.input))))){
                 return false;
             }
         }else if(atoi(ch) >= b.input){
