@@ -9,19 +9,22 @@
 
 
 
-
-
 char input[INPUT_WIDTH] = "";
 char baseNumber[INPUT_WIDTH] = "";
 int bufferState = false;
 int hexmapOffSet = 6; 
 int errorStatus = 0;
-char desiredBase[INPUT_WIDTH] = "";
+char desiredNumStream[INPUT_WIDTH] = "";
 
 
 typedef struct{
     int input, output;
 }Bases;
+
+typedef struct{
+    int baseTen;
+    char * otherBases; 
+}DesiredBase;
 
 char hexmap[6] = {
     'a', 'b', 'c', 'd', 'e', 'f',
@@ -39,7 +42,13 @@ int hexmapValue(char hexCharacter){
     }
 }
 
-
+char reverseHexmapValue(int hexValue){
+    for(int i=0; i < 6; i++){
+        if((hexValues[i] == hexValue)|| (hexValues[i] == tolower(hexValue))){
+            return hexmap[i];
+        }
+    }
+}
 
 void appendChar(char *destination, char source){
     int len = strlen(destination);
@@ -47,6 +56,7 @@ void appendChar(char *destination, char source){
     destination[++len] = '\0';
 
 }
+
 
 bool isAllNumeric(char * input){
     for(int i = 0; i < strlen(input); i++){
@@ -58,6 +68,15 @@ bool isAllNumeric(char * input){
     }
 }
 
+bool inRange(char *input){
+    if (isAllNumeric(input)){
+        if ((atoi(input)) >= 2 && (atoi(input)) <= 16){
+            return true;
+        }
+
+    }
+    return false;
+}
 
 
 bool isEmpty(char * input){
@@ -83,14 +102,14 @@ Bases getInputAndOutputBase(Bases bases){
     bool status = true;
 
     while(status){
-        printf("Please enter current base of number\n");
+        printf("Please enter current base of number:\n");
         getInput(input);
-        if(isAllNumeric(input) && (!isEmpty(input)) && atoi(input) != 0){
+        if(isAllNumeric(input) && (!isEmpty(input)) && atoi(input) != 0 && inRange(input)){
             bases.input = atoi(input);
             flushInput(input);
             status = false;
         }else{
-            printf("Check your entry again? must be a valid number base\n");
+            printf("Check your entry again? must be a valid number base, make sure that all characters are digits and that the base you enter ed is between 2 and\n");
             flushInput(input);
         }
     }
@@ -98,12 +117,12 @@ Bases getInputAndOutputBase(Bases bases){
     while(status){
         printf("Enter base you would like to convert to \n");
         getInput(input);
-        if(isAllNumeric(input) && (!isEmpty(input)) && atoi(input) != 0){
+        if(isAllNumeric(input) && (!isEmpty(input)) && atoi(input) != 0 && inRange(input)){
             bases.output = atoi(input);
             flushInput(input);
             status = false;
         }else{
-            printf("Check your entry again? must be a valid number base\n");
+            printf("Check your entry again? must be a valid number base, make sure that all characters are digits and that the base you enter ed is between 2 and\n");
             flushInput(input);
         }    
     }
@@ -115,6 +134,9 @@ void getNumber(char *baseNumber){
     getInput(baseNumber);
 }
 
+char intToCharUnder10(int val){
+    return '0' + val;
+}
 
 int toBaseTen(char *baseNumber, Bases b){
     int val = 0;
@@ -145,14 +167,49 @@ bool isBaseNumberValid(char * baseNumber, Bases b){
     return true;
 }
 
+void reverseString(char * str) {
+    int i, j;
+    char temp;
+    int n = strlen(str);
 
-convertBase();
+    for (i = 0, j = n - 1; i < j; i++, j--) {
+        temp = str[i];   
+        str[i] = str[j];
+        str[j] = temp;
+    }
+}
+
+DesiredBase convertBase(char * baseNumber, Bases b, int base){
+    DesiredBase d;
+    d.otherBases = malloc(INPUT_WIDTH * sizeof(char));
+    if (b.output == 10){
+        d.baseTen = toBaseTen(baseNumber,b);
+        return d;
+    }
+    int tempNum = toBaseTen(baseNumber, b);
+    while(tempNum>=b.output){
+        if (tempNum%b.output < 10){
+            appendChar(d.otherBases, intToCharUnder10(tempNum%b.output));
+            tempNum = floor(tempNum / b.output);
+        }
+        else{
+            appendChar(d.otherBases, reverseHexmapValue(tempNum%b.output));
+            tempNum = floor(tempNum / b.output);
+        }
+    }
+    appendChar(d.otherBases,  intToCharUnder10(tempNum));
+    reverseString(d.otherBases);
+    return d;
+}
+
 
 int main(){
     Bases b;
-
+    printf("***********************************************\n\n\n");
     printf("Welcome to this program to convert numbers from one"  
-    " base to another. Kindly follow the prompt and you are good to go!\n"
+    " base to another.\n"
+    "At this point in time you are only limited to bases 2 through to base 16 \n"
+    "Kindly follow the prompt and you are good to go!\n"
     );
 
     Bases bases = getInputAndOutputBase(b);
@@ -163,14 +220,13 @@ int main(){
         flushInput(baseNumber);
         getNumber(baseNumber);
     }
-    printf("%s in base %d is =========> x\n", baseNumber, bases.output);
-    // Bases b;
-    // b.input = 16;
-    // b.output = 10;
-    // char bn[10] = "A24";
-
-    // printf("%s, is %d in base 10", bn, toBaseTen(bn, b));
-
+    DesiredBase ans = convertBase(baseNumber, bases, bases.input);
+    if (bases.output == 10){
+        printf("%s (base %d) is ================> %d (base %d)\n", baseNumber, bases.input,  ans.baseTen, bases.output);
+    }
+    else{
+        printf("%s (base %d) is ================> %s (base %d)\n", baseNumber, bases.input, ans.otherBases, bases.output);    
+    }
 
    return 0; 
 }
