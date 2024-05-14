@@ -51,7 +51,6 @@ void appendChar(char *destination, char source){
     int len = strlen(destination);
     destination[len] = source;
     destination[++len] = '\0';
-
 }
 
 
@@ -157,7 +156,11 @@ bool isBaseNumberValid(char * baseNumber, Bases b){
             if (!((ch[0] >= 'a' && ch[0] <= reverseHexmapValue(b.input))||(ch[0] >= 'A' && ch[0] <= toupper(reverseHexmapValue(b.input))))){
                 return false;
             }
-        }else if(atoi(ch) >= b.input &&  isdigit(ch[0])){
+        }else if(isdigit(ch[0])){
+            if (atoi(ch) >= b.input){
+            return false;
+            } 
+        }else if (!isdigit(ch[0])){
             return false;
         }
     }
