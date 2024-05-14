@@ -10,10 +10,8 @@
 char input[INPUT_WIDTH] = "";
 char baseNumber[INPUT_WIDTH] = "";
 int bufferState = false;
-int hexmapOffSet = 6; 
 bool programStatus = true;
 bool innerProgramStatus = true;
-char desiredNumStream[INPUT_WIDTH] = "";
 
 
 typedef struct{
@@ -249,6 +247,5 @@ int main(){
     }
         
     printf("************ Exiting Program **********************\n\n\n");
-
    return 0; 
 }
