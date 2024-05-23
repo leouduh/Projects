@@ -9,7 +9,6 @@
 
 char input[INPUT_WIDTH] = "";
 char baseNumber[INPUT_WIDTH] = "";
-int bufferState = false;
 bool programStatus = true;
 bool innerProgramStatus = true;
 
@@ -84,45 +83,40 @@ void getInput(char *input){
     while((ch = getchar()) != '\n'){
         appendChar(input, ch);
     }
-    if (strlen(input) >= 1){
-        bufferState = true;
-    }
 }
 
 void flushInput(char * input){
     memset(input, '\0', INPUT_WIDTH);
-    bufferState = false;
+    // bufferState = false;
 }
 
-Bases getInputAndOutputBase(Bases bases){
-    bool status = true;
-
-    while(status){
+void getInputAndOutputBase(Bases * bases){
+    while(bases->input == 0){
         printf("Please enter current base of number:\n");
         getInput(input);
-        if(isAllNumeric(input) && (!isEmpty(input)) && atoi(input) != 0 && inRange(input)){
-            bases.input = atoi(input);
+        if(isAllNumeric(input) && \
+        (!isEmpty(input)) && atoi(input) != 0 && inRange(input)){
+            bases->input = atoi(input);
             flushInput(input);
-            status = false;
         }else{
-            printf("Check your entry again? must be a valid number base, make sure that all characters are digits and that the base you enter ed is between 2 and\n");
+            printf("Check your entry again? must be a valid number base"
+            " make sure that all characters are digits and that "
+            "the base you entered is between base 2 and base 16\n"
+            );
             flushInput(input);
         }
     }
-    status = true;
-    while(status){
+    while(bases->output == 0){
         printf("Enter base you would like to convert to \n");
         getInput(input);
         if(isAllNumeric(input) && (!isEmpty(input)) && atoi(input) != 0 && inRange(input)){
-            bases.output = atoi(input);
+            bases->output = atoi(input);
             flushInput(input);
-            status = false;
         }else{
             printf("Check your entry again? must be a valid number base, make sure that all characters are digits and that the base you enter ed is between 2 and\n");
             flushInput(input);
         }    
-    }
-    return bases;
+    };
 }
 
 void getNumber(char *baseNumber){
@@ -148,16 +142,16 @@ int toBaseTen(char *baseNumber, Bases b){
     return val;
 }
 
-bool isBaseNumberValid(char * baseNumber, Bases b){
+bool isBaseNumberValid(char * baseNumber, Bases *b){
     char ch[1] = "";
     for(int i = 0; i < strlen(baseNumber); i++){
         ch[0] = baseNumber[i];
-        if((b.input > 10) && (isalpha(ch[0]))){
-            if (!((ch[0] >= 'a' && ch[0] <= reverseHexmapValue(b.input))||(ch[0] >= 'A' && ch[0] <= toupper(reverseHexmapValue(b.input))))){
+        if((b->input > 10) && (isalpha(ch[0]))){
+            if (!((ch[0] >= 'a' && ch[0] <= reverseHexmapValue(b->input))||(ch[0] >= 'A' && ch[0] <= toupper(reverseHexmapValue(b->input))))){
                 return false;
             }
         }else if(isdigit(ch[0])){
-            if (atoi(ch) >= b.input){
+            if (atoi(ch) >= b->input){
             return false;
             } 
         }else if (!isdigit(ch[0])){
@@ -202,8 +196,9 @@ void convertBase(char * baseNumber, Bases b, int base, DesiredBase * d){
 
 
 int main(){
-    Bases b;
-    DesiredBase ans;
+    Bases b = {0, 0};
+    DesiredBase ans = {0, ""};
+    
     printf("***********************************************\n\n\n");
     printf("Welcome to this program to convert numbers from one"  
     " base to another.\n"
@@ -213,22 +208,28 @@ int main(){
 
     while(programStatus){
         
-        Bases bases = getInputAndOutputBase(b);
-        printf("You wanna convert from base %d to base %d\n", bases.input, bases.output);
+        
+        getInputAndOutputBase(&b);
+        printf("You wanna convert from base %d to base %d\n",\
+        b.input, b.output);
         getNumber(baseNumber);
-        while (isBaseNumberValid(baseNumber, bases)==false){
-            printf("The number you have entered is not a valid number in base %d\n", bases.input);
+        while (isBaseNumberValid(baseNumber, &b)==false){
+            printf("The number you have entered is not a valid number in base %d\n", b.input);
             flushInput(baseNumber);
             getNumber(baseNumber);
         }
-        convertBase(baseNumber, bases, bases.input, &ans);
-        if (bases.output == 10){
-            printf("%s (base %d) is ================> %d (base %d)\n", baseNumber, bases.input,  ans.baseTen, bases.output);
+        convertBase(baseNumber, b, b.input, &ans);
+        if (b.output == 10){
+            printf("%s (base %d) is ================> %d (base %d)\n", baseNumber, b.input,  ans.baseTen, b.output);
         }
         else{
-            printf("%s (base %d) is ================> %s (base %d)\n", baseNumber, bases.input, ans.otherBases, bases.output);    
+            printf("%s (base %d) is ================> %s (base %d)\n", baseNumber, b.input, ans.otherBases, b.output);    
         }
         flushInput(ans.otherBases);
+        ans.baseTen = 0;
+        b.input = 0;
+        b.output = 0;
+
 
         // free(ans.otherBases);
 
@@ -247,8 +248,8 @@ int main(){
                 flushInput(input);
             }
         }
-        flushInput(baseNumber);
-        flushInput(input);
+    flushInput(baseNumber);
+    flushInput(input);
     innerProgramStatus = true;
     }
         
