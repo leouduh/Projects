@@ -20,7 +20,7 @@ typedef struct{
 
 typedef struct{
     int baseTen;
-    char * otherBases; 
+    char otherBases[INPUT_WIDTH]; 
 }DesiredBase;
 
 char hexmap[6] = {
@@ -179,32 +179,31 @@ void reverseString(char * str) {
     }
 }
 
-DesiredBase convertBase(char * baseNumber, Bases b, int base){
-    DesiredBase d;
-    d.otherBases = malloc(INPUT_WIDTH * sizeof(char));
+void convertBase(char * baseNumber, Bases b, int base, DesiredBase * d){
     if (b.output == 10){
-        d.baseTen = toBaseTen(baseNumber,b);
-        return d;
+        d->baseTen = toBaseTen(baseNumber,b);
+        // return d;
     }
     int tempNum = toBaseTen(baseNumber, b);
     while(tempNum>=b.output){
         if (tempNum%b.output < 10){
-            appendChar(d.otherBases, intToCharUnder10(tempNum%b.output));
+            appendChar(d->otherBases, intToCharUnder10(tempNum%b.output));
             tempNum = floor(tempNum / b.output);
         }
         else{
-            appendChar(d.otherBases, reverseHexmapValue(tempNum%b.output));
+            appendChar(d->otherBases, reverseHexmapValue(tempNum%b.output));
             tempNum = floor(tempNum / b.output);
         }
     }
-    appendChar(d.otherBases,  intToCharUnder10(tempNum));
-    reverseString(d.otherBases);
-    return d;
+    appendChar(d->otherBases,  intToCharUnder10(tempNum));
+    reverseString(d->otherBases);
+    // return d;
 }
 
 
 int main(){
     Bases b;
+    DesiredBase ans;
     printf("***********************************************\n\n\n");
     printf("Welcome to this program to convert numbers from one"  
     " base to another.\n"
@@ -222,13 +221,16 @@ int main(){
             flushInput(baseNumber);
             getNumber(baseNumber);
         }
-        DesiredBase ans = convertBase(baseNumber, bases, bases.input);
+        convertBase(baseNumber, bases, bases.input, &ans);
         if (bases.output == 10){
             printf("%s (base %d) is ================> %d (base %d)\n", baseNumber, bases.input,  ans.baseTen, bases.output);
         }
         else{
             printf("%s (base %d) is ================> %s (base %d)\n", baseNumber, bases.input, ans.otherBases, bases.output);    
         }
+        flushInput(ans.otherBases);
+
+        // free(ans.otherBases);
 
         while (innerProgramStatus){
             //Determines if the program reruns or not.
