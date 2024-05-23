@@ -52,6 +52,13 @@ void appendChar(char *destination, char source){
     destination[++len] = '\0';
 }
 
+void printInvalidBaseMessage(){
+    printf("Check your entry again? must be a valid number base"
+            " make sure that all characters are digits and that "
+            "the base you entered is between base 2 and base 16, no space or "
+            "special characters\n"
+            );
+}
 
 bool isAllNumeric(char * input){
     for(int i = 0; i < strlen(input); i++){
@@ -99,10 +106,7 @@ void getInputAndOutputBase(Bases * bases){
             bases->input = atoi(input);
             flushInput(input);
         }else{
-            printf("Check your entry again? must be a valid number base"
-            " make sure that all characters are digits and that "
-            "the base you entered is between base 2 and base 16\n"
-            );
+            printInvalidBaseMessage();
             flushInput(input);
         }
     }
@@ -113,7 +117,7 @@ void getInputAndOutputBase(Bases * bases){
             bases->output = atoi(input);
             flushInput(input);
         }else{
-            printf("Check your entry again? must be a valid number base, make sure that all characters are digits and that the base you enter ed is between 2 and\n");
+            printInvalidBaseMessage();
             flushInput(input);
         }    
     };
@@ -206,9 +210,9 @@ int main(){
     "Kindly follow the prompt and you are good to go!\n"
     );
 
-    while(programStatus){
-        
-        
+
+    do{
+  
         getInputAndOutputBase(&b);
         printf("You wanna convert from base %d to base %d\n",\
         b.input, b.output);
@@ -226,16 +230,16 @@ int main(){
             printf("%s (base %d) is ================> %s (base %d)\n", baseNumber, b.input, ans.otherBases, b.output);    
         }
         flushInput(ans.otherBases);
+        flushInput(baseNumber);
+        flushInput(input);
         ans.baseTen = 0;
         b.input = 0;
         b.output = 0;
 
-
-        // free(ans.otherBases);
-
         while (innerProgramStatus){
             //Determines if the program reruns or not.
-            printf("\n\n Would you like to run the converter again? Press Y/N:\n");
+            printf("\n\n Would you like to run the converter again?:"
+             " Press Y/N:\n");
             getInput(input);
             if ('y' == input[0] || 'Y' == input[0]){
                 innerProgramStatus = false;
@@ -252,6 +256,7 @@ int main(){
     flushInput(input);
     innerProgramStatus = true;
     }
+    while(programStatus);
         
     printf("************ Exiting Program **********************\n\n\n");
    return 0; 
