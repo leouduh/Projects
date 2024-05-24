@@ -58,7 +58,7 @@ void popNode(node *head){
     temp->next = NULL;
 }
 
-void insertNode(node *head, node *currNode, int position){
+void replaceNode(node *head, node *currNode, int position){
     //Using zero index to insert a Node in the linked list
     if(position == 0){
         head->value = currNode->value;
@@ -66,6 +66,14 @@ void insertNode(node *head, node *currNode, int position){
         head = currNode;
         free(currNode);
     }
+}
+
+void prepend(node **head, node * currValn){
+    printf("Current Node is: %p\n", currValn);
+    currValn->next = head;
+    *head = currValn;
+    printf("head is now %p\n", head);
+    // printf("%p\n", head->next);
 }
 
 int main(){
@@ -99,15 +107,27 @@ int main(){
     popNode(head);
     printf("Node has been popped off, now linked list is: ");
     printLinkedList(head);
-    printf("%p\n", head);
 
 
     node *n;
     n = createNode(100);
-    insertNode(head, n, 0);
+    replaceNode(head, n, 0);
     printf("Node has been inserted in position 0, linked list is now: ");
     printLinkedList(head);
-    printf("%p\n", head);
+
+    node *k;
+    k = createNode(88);
+    replaceNode(head, k, 0);
+    printf("Node has been inserted in position 0, linked list is now: ");
+    printLinkedList(head);
+
+    // node *m = createNode(666);
+    // printf("%p\n", m);
+    // prepend(head, m);
+    // printf("Item has been prepended to list\n");
+    // printf("%p\n", head);
+    // printLinkedList(head);
+
 
     return 0;
 }
