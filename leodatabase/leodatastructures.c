@@ -59,7 +59,13 @@ void popNode(node *head){
 }
 
 void insertNode(node *head, node *currNode, int position){
-    
+    //Using zero index to insert a Node in the linked list
+    if(position == 0){
+        head->value = currNode->value;
+        currNode->next = head->next;
+        head = currNode;
+        free(currNode);
+    }
 }
 
 int main(){
@@ -83,14 +89,25 @@ int main(){
     printf("\n Adding a bunch of nodes ---------\n");
     printf("Linked list now looks like: ");
     printLinkedList(head);
+
     
     popNode(head);
     printf("Node has been popped off, now linked list is: ");
     printLinkedList(head);
 
+
     popNode(head);
     printf("Node has been popped off, now linked list is: ");
     printLinkedList(head);
+    printf("%p\n", head);
+
+
+    node *n;
+    n = createNode(100);
+    insertNode(head, n, 0);
+    printf("Node has been inserted in position 0, linked list is now: ");
+    printLinkedList(head);
+    printf("%p\n", head);
 
     return 0;
 }
