@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 
+
 typedef struct node{
     int value;
     struct node* next;
@@ -15,6 +16,8 @@ node* createNode(int value){
     Node->next = NULL;   
     return Node;
 }
+
+int lengthofLinkedList(node *head);
 
 node* createLinkedList(int value){
     //Uses createNode function to create linked list
@@ -60,12 +63,26 @@ void popNode(node *head){
 
 void replaceNode(node *head, node *currNode, int position){
     //Using zero index to insert a Node in the linked list
+    if(position > lengthofLinkedList(head)-1){
+        printf("You are attempting to replace a node that does not exist"
+        ". Position is out of bounds!");
+        return;
+    }
     if(position == 0){
         head->value = currNode->value;
         currNode->next = head->next;
         head = currNode;
         free(currNode);
+        return;
     }
+    int i=0;
+    node *temp = head;
+    do{
+        temp = temp->next;
+        i++;
+    }while(i != position);
+    temp->value = currNode->value;
+    free(currNode);
 }
 
 int lengthofLinkedList(node *head){
@@ -140,6 +157,14 @@ int main(){
 
 
     printf("The length of the linked list is now %d\n", lengthofLinkedList(head));
+
+    replaceNode(head, createNode(69), 1);
+    printf("Node in position 1 how now been replaced. linked list is now: ");
+    printLinkedList(head);
+
+    replaceNode(head, createNode(2024), 3);
+    printf("Node in position 1 how now been replaced. linked list is now: ");
+    printLinkedList(head);
 
 
 
