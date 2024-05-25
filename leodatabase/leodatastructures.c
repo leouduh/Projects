@@ -68,12 +68,20 @@ void replaceNode(node *head, node *currNode, int position){
     }
 }
 
-void prepend(node **head, node * currValn){
-    //pointer to pointer
-    printf("Current Node is: %p\n", currValn);
-    currValn->next = *head;
-    *head = currValn;
+int lengthofLinkedList(node *head){
+    int length = 1;
+    node *temp = head;
+    while(temp->next != NULL){
+        length++;
+        temp = temp->next;
+    }
+    return length;
+}
 
+void prepend(node **head, node * currNode){
+    //pointer to pointer
+    currNode->next = *head;
+    *head = currNode;
 }
 
 int main(){
@@ -112,21 +120,27 @@ int main(){
     node *n;
     n = createNode(100);
     replaceNode(head, n, 0);
-    printf("Node has been inserted in position 0, linked list is now: ");
+    printf("Node in position 0 has now been replaced ");
     printLinkedList(head);
 
     node *k;
     k = createNode(88);
     replaceNode(head, k, 0);
-    printf("Node has been inserted in position 0, linked list is now: ");
+    printf("Node in position 0 has now been replaced ");
     printLinkedList(head);
 
     node *m = createNode(666);
     printf("%p\n", m);
     prepend(&head, m);
     printf("Item has been prepended to list\n");
-    printf("%p\n", head);
     printLinkedList(head);
+
+    appendNode(head, createNode(419));
+    printLinkedList(head);
+
+
+    printf("The length of the linked list is now %d\n", lengthofLinkedList(head));
+
 
 
     return 0;
