@@ -9,7 +9,7 @@ typedef struct node{
 }node;
 
 node* createNode(int value){
-    //creates a node 
+    //creates a node, return pointer to a node
     node* Node;
     Node = malloc(sizeof(node)*1);
     Node->value = value;
@@ -21,16 +21,15 @@ int lengthofLinkedList(node *phead);
 node* createLinkedList(int value);
 void appendNode(node *phead, node *currNode);
 void printLinkedList(node* phead);
-void popNode(node *phead);
+node* popNode(node *phead);
 void replaceNode(node *phead, node *currNode, int position);
 void insertNode(node **phead, node *currNode, int position);
 void prepend(node **phead, node * currNode);
 
 
 node* createLinkedList(int value){
-    //Uses createNode function to create linked list
-    // all we need for a linked list is the phead really
-    // with the phead we can perform do all we need to do.
+    //This creates a pointer to head node phead, this is the starting point
+    //of the linked list.
     node* phead;
     phead = createNode(value);
 }
@@ -39,7 +38,7 @@ node* createLinkedList(int value){
 void appendNode(node* phead, node* currNode){
     //Appends a node currNode to the end of the linked list
     //last node will point to currNode instead and currNode
-    //Will in turn point to NULL
+    //Will in turn now point to NULL
     node* temp;
     temp = phead;
     while(temp->next != NULL){
@@ -50,6 +49,8 @@ void appendNode(node* phead, node* currNode){
 }
 
 void printLinkedList(node* phead){
+    //Prints the linked list to the console int the format 
+    //node1--->node2---->node3---->NULL
     node* temp;
     temp = phead;
     while(temp->next != NULL){
@@ -59,14 +60,17 @@ void printLinkedList(node* phead){
     printf("%d--->NULL\n", temp->value);
 }
 
-void popNode(node *phead){
+node* popNode(node *phead){
+    //Removes the last node from the linked list and returns pointer to the
+    //last node.
     node *temp;
     temp = phead;
     while(temp->next->next != NULL){
         temp = temp->next;
     }
-    free(temp->next);
+    node *ans = temp->next;
     temp->next = NULL;
+    return ans;
 }
 
 void replaceNode(node *phead, node *currNode, int position){
@@ -156,51 +160,51 @@ int main(){
     printLinkedList(phead);
 
     
-    popNode(phead);
-    printf("Node has been popped off, now linked list is: ");
+    node *n = popNode(phead);
+    printf("Node %d has been popped off\n: ", n->value);
     printLinkedList(phead);
 
 
-    popNode(phead);
-    printf("Node has been popped off, now linked list is: ");
-    printLinkedList(phead);
+    // popNode(phead);
+    // printf("Node has been popped off, now linked list is: ");
+    // printLinkedList(phead);
 
 
-    node *n;
-    n = createNode(100);
-    replaceNode(phead, n, 0);
-    printf("Node in position 0 has now been replaced ");
-    printLinkedList(phead);
+    // node *n;
+    // n = createNode(100);
+    // replaceNode(phead, n, 0);
+    // printf("Node in position 0 has now been replaced ");
+    // printLinkedList(phead);
 
-    node *k;
-    k = createNode(88);
-    replaceNode(phead, k, 0);
-    printf("Node in position 0 has now been replaced ");
-    printLinkedList(phead);
+    // node *k;
+    // k = createNode(88);
+    // replaceNode(phead, k, 0);
+    // printf("Node in position 0 has now been replaced ");
+    // printLinkedList(phead);
 
-    node *m = createNode(666);
-    printf("%p\n", m);
-    prepend(&phead, m);
-    printf("Item has been prepended to list\n");
-    printLinkedList(phead);
+    // node *m = createNode(666);
+    // printf("%p\n", m);
+    // prepend(&phead, m);
+    // printf("Item has been prepended to list\n");
+    // printLinkedList(phead);
 
-    appendNode(phead, createNode(419));
-    printLinkedList(phead);
+    // appendNode(phead, createNode(419));
+    // printLinkedList(phead);
 
 
-    printf("The length of the linked list is now %d\n", lengthofLinkedList(phead));
+    // printf("The length of the linked list is now %d\n", lengthofLinkedList(phead));
 
-    replaceNode(phead, createNode(69), 1);
-    printf("Node in position 1 how now been replaced. linked list is now: ");
-    printLinkedList(phead);
+    // replaceNode(phead, createNode(69), 1);
+    // printf("Node in position 1 how now been replaced. linked list is now: ");
+    // printLinkedList(phead);
 
-    replaceNode(phead, createNode(2024), 3);
-    printf("Node in position 1 how now been replaced. linked list is now: ");
-    printLinkedList(phead);
+    // replaceNode(phead, createNode(2024), 3);
+    // printf("Node in position 1 how now been replaced. linked list is now: ");
+    // printLinkedList(phead);
 
-    insertNode(&phead, createNode(100), 5);
-    printf("I just inserted 100 in position 0: Linked list is now: ");
-    printLinkedList(phead);
+    // insertNode(&phead, createNode(100), 5);
+    // printf("I just inserted 100 in position 0: Linked list is now: ");
+    // printLinkedList(phead);
 
     return 0;
 }
