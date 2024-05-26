@@ -76,21 +76,24 @@ void replaceNode(node *phead, node *currNode, int position){
         ". Position is out of bounds!");
         return;
     }
-    if(position == 0){
-        phead->value = currNode->value;
-        currNode->next = phead->next;
-        phead = currNode;
-        free(currNode);
-        return;
-    }
-    int i=0;
-    node *temp = phead;
-    do{
-        temp = temp->next;
-        i++;
-    }while(i != position);
-    temp->value = currNode->value;
-    free(currNode);
+    switch(position){
+        case 0:
+            phead->value = currNode->value;
+            currNode->next = phead->next;
+            phead = currNode;
+            free(currNode);
+            return;
+            break;
+        default:
+            int i=0;
+            node *temp = phead;
+            do{
+                temp = temp->next;
+                i++;
+            }while(i != position);
+            temp->value = currNode->value;
+            free(currNode);
+        }
 }
 
 void insertNode(node **pphead, node *currNode, int position){
@@ -98,20 +101,20 @@ void insertNode(node **pphead, node *currNode, int position){
         printf("Insertion operation out of bounds!!!!\n");
         return;
     }
-    if(position == 0){
-        currNode->next = *pphead;
-        *pphead = currNode;
-        return; 
-
-    }else{
-        node *temp = *pphead;
-        for(int i=0; i < position - 1; i++){
-            temp = temp->next;
-            }
-    currNode->next = temp->next;
-    temp->next = currNode;
+    switch(position){
+        case 0:
+            currNode->next = *pphead;
+            *pphead = currNode;
+            return; 
+            break;
+        default:
+            node *temp = *pphead;
+            for(int i=0; i < position - 1; i++){
+                temp = temp->next;
+                }
+        currNode->next = temp->next;
+        temp->next = currNode;
     }
-
 }
 
 int lengthofLinkedList(node *phead){
