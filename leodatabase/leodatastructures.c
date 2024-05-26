@@ -17,12 +17,12 @@ node* createNode(int value){
     return Node;
 }
 
-int lengthofLinkedList(node *phead);
+unsigned int lengthofLinkedList(node *phead);
 node* createLinkedList(int value);
 void appendNode(node *phead, node *currNode);
 void printLinkedList(node* phead);
 node* popNode(node *phead);
-void replaceNode(node *phead, node *currNode, int position);
+void modifyNode(node *phead, node *currNode, int position);
 void insertNode(node **phead, node *currNode, int position);
 void prepend(node **phead, node * currNode);
 
@@ -73,18 +73,16 @@ node* popNode(node *phead){
     return ans;
 }
 
-void replaceNode(node *phead, node *currNode, int position){
-    //Using zero index to insert a Node in the linked list
+void modifyNode(node *phead, node *currNode, int position){
+    //modifies value of a node, this can easily be shortened.
     if(position > lengthofLinkedList(phead)-1){
-        printf("You are attempting to replace a node that does not exist"
+        printf("You are attempting to modify a node that does not exist"
         ". Position is out of bounds!");
         return;
     }
     switch(position){
         case 0:
             phead->value = currNode->value;
-            currNode->next = phead->next;
-            phead = currNode;
             free(currNode);
             return;
             break;
@@ -101,6 +99,7 @@ void replaceNode(node *phead, node *currNode, int position){
 }
 
 void insertNode(node **pphead, node *currNode, int position){
+    //Inserts Node in position of linked list and right shifts linked list 
     if(position > lengthofLinkedList(*pphead)){
         printf("Insertion operation out of bounds!!!!\n");
         return;
@@ -121,7 +120,8 @@ void insertNode(node **pphead, node *currNode, int position){
     }
 }
 
-int lengthofLinkedList(node *phead){
+unsigned int lengthofLinkedList(node *phead){
+    //Returns the length of the linked list
     int length = 1;
     node *temp = phead;
     while(temp->next != NULL){
@@ -132,7 +132,7 @@ int lengthofLinkedList(node *phead){
 }
 
 void prepend(node **pphead, node * currNode){
-    //pointer to pointer
+    //makes currNode the new pointer of the linked list.
     currNode->next = *pphead;
     *pphead = currNode;
 }
@@ -160,25 +160,33 @@ int main(){
     printLinkedList(phead);
 
     
-    node *n = popNode(phead);
-    printf("Node %d has been popped off\n: ", n->value);
+    node *nu = popNode(phead);
+    printf("Node %d has been popped off\n: ", nu->value);
     printLinkedList(phead);
 
 
-    // popNode(phead);
-    // printf("Node has been popped off, now linked list is: ");
-    // printLinkedList(phead);
+    popNode(phead);
+    printf("Node has been popped off, now linked list is: ");
+    printLinkedList(phead);
 
 
-    // node *n;
-    // n = createNode(100);
-    // replaceNode(phead, n, 0);
-    // printf("Node in position 0 has now been replaced ");
-    // printLinkedList(phead);
+    node *n;
+    n = createNode(100);
+    modifyNode(phead, n, 0);
+    printf("Node in position 0 has now been replaced ");
+    printLinkedList(phead);
+
+    node *k;
+    k = createNode(1993);
+    modifyNode(phead, n, 0);
+    printf("Node in position 0 has now been replaced: ");
+    printLinkedList(phead);
+
+    printf("The length of the linked list is: %d\n", lengthofLinkedList(phead));
 
     // node *k;
     // k = createNode(88);
-    // replaceNode(phead, k, 0);
+    // modifyNode(phead, k, 0);
     // printf("Node in position 0 has now been replaced ");
     // printLinkedList(phead);
 
@@ -194,11 +202,11 @@ int main(){
 
     // printf("The length of the linked list is now %d\n", lengthofLinkedList(phead));
 
-    // replaceNode(phead, createNode(69), 1);
+    // modifyNode(phead, createNode(69), 1);
     // printf("Node in position 1 how now been replaced. linked list is now: ");
     // printLinkedList(phead);
 
-    // replaceNode(phead, createNode(2024), 3);
+    // modifyNode(phead, createNode(2024), 3);
     // printf("Node in position 1 how now been replaced. linked list is now: ");
     // printLinkedList(phead);
 
