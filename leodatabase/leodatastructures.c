@@ -56,7 +56,7 @@ void printLinkedList(node* phead){
         printf("%d---->", temp->value);
         temp = temp->next;
     }
-    printf("%d\n", temp->value);
+    printf("%d--->NULL\n", temp->value);
 }
 
 void popNode(node *phead){
@@ -94,8 +94,8 @@ void replaceNode(node *phead, node *currNode, int position){
 }
 
 void insertNode(node **pphead, node *currNode, int position){
-    if(position > lengthofLinkedList(*pphead)-1){
-        printf("Insertion operation out of bounds");
+    if(position > lengthofLinkedList(*pphead)){
+        printf("Insertion operation out of bounds!!!!\n");
         return;
     }
     if(position == 0){
@@ -107,7 +107,6 @@ void insertNode(node **pphead, node *currNode, int position){
         node *temp = *pphead;
         for(int i=0; i < position - 1; i++){
             temp = temp->next;
-            i++;
             }
     currNode->next = temp->next;
     temp->next = currNode;
@@ -196,7 +195,7 @@ int main(){
     printf("Node in position 1 how now been replaced. linked list is now: ");
     printLinkedList(phead);
 
-    insertNode(&phead, createNode(100), 4);
+    insertNode(&phead, createNode(100), 5);
     printf("I just inserted 100 in position 0: Linked list is now: ");
     printLinkedList(phead);
 
