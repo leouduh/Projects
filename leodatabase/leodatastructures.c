@@ -1,24 +1,35 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
+typedef union Value{
+    int i;
+    float f;
+    char s[64];
+}Value;
 
+typedef enum{
+    INT, FLOAT, STRING
+}datatype;
 
 typedef struct node{
-    int value;
+    datatype type;
+    Value value;
     struct node* next;
 }node;
 
-node* createNode(int value){
+node* createNode(Value value, datatype type){
     //creates a node, return pointer to a node
     node* Node;
     Node = malloc(sizeof(node)*1);
+    Node->type = type;
     Node->value = value;
     Node->next = NULL;   
     return Node;
 }
 
 unsigned int lengthofLinkedList(node *phead);
-node* createLinkedList(int value);
+node* createLinkedList(Value value, datatype type);
 void appendNode(node *phead, node *currNode);
 void printLinkedList(node* phead);
 node* popNode(node *phead);
@@ -27,11 +38,11 @@ void insertNode(node **phead, node *currNode, int position);
 void prepend(node **phead, node * currNode);
 
 
-node* createLinkedList(int value){
+node* createLinkedList(Value value, datatype type){
     //This creates a pointer to head node phead, this is the starting point
     //of the linked list.
     node* phead;
-    phead = createNode(value);
+    phead = createNode(value, type);
 }
 
 
@@ -54,10 +65,29 @@ void printLinkedList(node* phead){
     node* temp;
     temp = phead;
     while(temp->next != NULL){
-        printf("%d---->", temp->value);
+        switch(temp->type){
+            case INT:
+                printf("%d---->", temp->value.i);
+                break;
+            case FLOAT:
+                printf("%f---->", temp->value.f);
+                break;
+            case STRING:
+                printf("%s---->", temp->value.s);
+        }
         temp = temp->next;
     }
-    printf("%d--->NULL\n", temp->value);
+    switch(temp->type){
+        case INT:
+            printf("%d---->NULL", temp->value.i);
+            break;
+        case FLOAT:
+            printf("%f---->NULL", temp->value.f);
+            break;
+        case STRING:
+            printf("%s---->NULL", temp->value.s);
+    }
+    // printf("%d--->NULL\n", temp->value);
 }
 
 node* popNode(node *phead){
@@ -83,6 +113,7 @@ void modifyNode(node *phead, node *currNode, int position){
     switch(position){
         case 0:
             phead->value = currNode->value;
+            phead->type = currNode->type;
             free(currNode);
             return;
             break;
@@ -94,6 +125,7 @@ void modifyNode(node *phead, node *currNode, int position){
                 i++;
             }while(i != position);
             temp->value = currNode->value;
+            temp->type = currNode->type;
             free(currNode);
         }
 }
@@ -139,20 +171,26 @@ void prepend(node **pphead, node * currNode){
 
 int main(){
     node* phead;
-    phead = createLinkedList(5);
+    Value a;
+    a.i = 5;
+    phead = createLinkedList(a,INT);
     printf("You just created a node the value of the node is %d\n", phead->value);
     printf("This node points to %p\n", phead->next);
     node *node1, *node2, *node3, *node4;
-    node1 = createNode(10);
+    a.i = 10;
+    node1 = createNode(a, INT);
     appendNode(phead, node1);
 
-    node2 = createNode(20);
+    a.i = 20;
+    node2 = createNode(a, INT);
     appendNode(phead, node2);
 
-    node3 = createNode(30);
+    a.i = 30;
+    node3 = createNode(a, INT);
     appendNode(phead, node3);
 
-    node4 = createNode(40);
+    a.f = 294.83803;
+    node4 = createNode(a, FLOAT);
     appendNode(phead, node4);
 
     printf("\n Adding a bunch of nodes ---------\n");
@@ -161,7 +199,7 @@ int main(){
 
     
     node *nu = popNode(phead);
-    printf("Node %d has been popped off\n: ", nu->value);
+    printf("\nNode %d has been popped off\n: ", nu->value.f);
     printLinkedList(phead);
 
 
@@ -171,13 +209,16 @@ int main(){
 
 
     node *n;
-    n = createNode(100);
+    strcpy(a.s, "NAWA");
+    printf("The content in a.s is %s\n", a.s);
+    n = createNode(a, STRING);
     modifyNode(phead, n, 0);
     printf("Node in position 0 has now been replaced ");
     printLinkedList(phead);
 
+    a.i = 1993;
     node *k;
-    k = createNode(1993);
+    k = createNode(a, INT);
     modifyNode(phead, n, 0);
     printf("Node in position 0 has now been replaced: ");
     printLinkedList(phead);
