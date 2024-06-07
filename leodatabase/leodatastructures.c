@@ -225,35 +225,5 @@ int main(){
 
     printf("The length of the linked list is: %d\n", lengthofLinkedList(phead));
 
-    // node *k;
-    // k = createNode(88);
-    // modifyNode(phead, k, 0);
-    // printf("Node in position 0 has now been replaced ");
-    // printLinkedList(phead);
-
-    // node *m = createNode(666);
-    // printf("%p\n", m);
-    // prepend(&phead, m);
-    // printf("Item has been prepended to list\n");
-    // printLinkedList(phead);
-
-    // appendNode(phead, createNode(419));
-    // printLinkedList(phead);
-
-
-    // printf("The length of the linked list is now %d\n", lengthofLinkedList(phead));
-
-    // modifyNode(phead, createNode(69), 1);
-    // printf("Node in position 1 how now been replaced. linked list is now: ");
-    // printLinkedList(phead);
-
-    // modifyNode(phead, createNode(2024), 3);
-    // printf("Node in position 1 how now been replaced. linked list is now: ");
-    // printLinkedList(phead);
-
-    // insertNode(&phead, createNode(100), 5);
-    // printf("I just inserted 100 in position 0: Linked list is now: ");
-    // printLinkedList(phead);
-
     return 0;
 }
