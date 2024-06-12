@@ -20,7 +20,7 @@ typedef struct Queue{
 Queue* createQueue(Value val, datatype type);
 node* findRear(node* head);
 void enqueue(Queue* q, Value val, datatype type);
-
+void emptyQueue(Queue *q);
 
 Queue* createQueue(Value val, datatype type){
     Queue* q;
@@ -58,7 +58,6 @@ void printQueue(Queue* q){
     node* element = q->front;
     while(element->next != NULL){
         switch(element->type){
-            printf("%d", element->value.i);
             case INT:
                 printf("<====%d", element->value.i);
                 break;
@@ -69,10 +68,9 @@ void printQueue(Queue* q){
                 printf("<====%s", element->value.s);
                 break;
         }
-        element = element->next;
+    element = element->next;
     }
     switch(element->type){
-        printf("\n\n\n\n%d", element->value.i);
         case INT:
             printf("<====%d", element->value.i);
             break;
@@ -83,6 +81,18 @@ void printQueue(Queue* q){
             printf("<====%s", element->value.s);
             break;
     }
+}
+
+void emptyQueue(Queue* q){
+    node* head = q->front;
+    printf("okay\n");
+    while(head->next != NULL){
+        node* temp = head->next;
+        free(head);
+        head = temp;
+    }
+    free(head);
+    free(q);
 }
 
 
@@ -106,9 +116,14 @@ int main(){
     printf("The first element in the queue is now %d\n\n", q->front->value.i);
     printf("The rear element is %d\n", q->rear->value.i);
 
-    printf("last element points to %p", q->rear->next);
+    printf("last element points to %p\n", q->rear->next);
 
     printQueue(q);
+    printf("The address of the queue before emptying it is %p\n", q);
+    
+    emptyQueue(q);
+    printf("The address of the queue-q after emptying it is %p\n", q);
+    printf("%d\n", q->front->value.i);
     return 0;
 
 }
