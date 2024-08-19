@@ -1,93 +1,62 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "node.c"
 
-typedef union Value{
-    int i;
-    float f;
-    char s[64];
-}Value;
+// typedef union Value{
+//     int i;
+//     float f;
+//     char s[64];
+// }Value;
 
-typedef enum{
-    INT, FLOAT, STRING
-}datatype;
+// typedef enum{
+//     INT, FLOAT, STRING
+// }datatype;
 
-typedef struct node{
-    datatype type;
-    Value value;
-    struct node* next;
-}node;
+// typedef struct node{
+//     datatype type;
+//     Value value;
+//     struct node* next;
+// }node;
 
-node* createNode(Value value, datatype type){
-    //creates a node, return pointer to a node
-    node* Node;
-    Node = malloc(sizeof(node)*1);
-    Node->type = type;
-    Node->value = value;
-    Node->next = NULL;   
-    return Node;
-}
+typedef struct linkedList{
+    node* head;
+    node* tail; 
+}linkedList; 
+
 
 unsigned int lengthofLinkedList(node *phead);
-node* createLinkedList(Value value, datatype type);
-void appendNode(node *phead, node *currNode);
-void printLinkedList(node* phead);
+linkedList* createLinkedList(value value, datatype type);
+void appendToLinkedList(
+    linkedList* ll, value val, datatype type
+    );
+void printLinkedList(linkedList* ll);
 node* popNode(node *phead);
 void modifyNode(node *phead, node *currNode, int position);
 void insertNode(node **phead, node *currNode, int position);
 void prepend(node **phead, node * currNode);
 
 
-node* createLinkedList(Value value, datatype type){
+linkedList* createLinkedList(value value, datatype type){
     //This creates a pointer to head node phead, this is the starting point
     //of the linked list.
-    node* phead;
-    phead = createNode(value, type);
+    linkedList* ll = malloc(sizeof(linkedList) * 1);
+    node* n = createNode(value, type);
+    ll->head = n;
+    return ll;
 }
 
-
-void appendNode(node* phead, node* currNode){
-    //Appends a node currNode to the end of the linked list
-    //last node will point to currNode instead and currNode
-    //Will in turn now point to NULL
-    node* temp;
-    temp = phead;
-    while(temp->next != NULL){
-        temp = temp->next; 
-    }
-    temp->next = currNode;
-
-}
-
-void printLinkedList(node* phead){
+void printLinkedList(linkedList* ll){
     //Prints the linked list to the console int the format 
     //node1--->node2---->node3---->NULL
-    node* temp;
-    temp = phead;
+    node* temp = ll->head;
     while(temp->next != NULL){
-        switch(temp->type){
-            case INT:
-                printf("%d---->", temp->value.i);
-                break;
-            case FLOAT:
-                printf("%f---->", temp->value.f);
-                break;
-            case STRING:
-                printf("%s---->", temp->value.s);
-        }
+        printNodeRepresentation(temp);
+        printf("---->");
         temp = temp->next;
     }
-    switch(temp->type){
-        case INT:
-            printf("%d---->NULL", temp->value.i);
-            break;
-        case FLOAT:
-            printf("%f---->NULL", temp->value.f);
-            break;
-        case STRING:
-            printf("%s---->NULL", temp->value.s);
-    }
-    // printf("%d--->NULL\n", temp->value);
+    printNodeRepresentation(temp);
+    printf("----> NULL");
 }
 
 node* popNode(node *phead){
@@ -112,7 +81,7 @@ void modifyNode(node *phead, node *currNode, int position){
     }
     switch(position){
         case 0:
-            phead->value = currNode->value;
+            phead->val = currNode->val;
             phead->type = currNode->type;
             free(currNode);
             return;
@@ -124,11 +93,12 @@ void modifyNode(node *phead, node *currNode, int position){
                 temp = temp->next;
                 i++;
             }while(i != position);
-            temp->value = currNode->value;
+            temp->val = currNode->val;
             temp->type = currNode->type;
             free(currNode);
         }
 }
+
 
 void insertNode(node **pphead, node *currNode, int position){
     //Inserts Node in position of linked list and right shifts linked list 
@@ -167,4 +137,17 @@ void prepend(node **pphead, node * currNode){
     //makes currNode the new pointer of the linked list.
     currNode->next = *pphead;
     *pphead = currNode;
+}
+
+void appendToLinkedList(
+    linkedList* ll, value val, datatype type
+    )
+    {
+    node* n = createNode(val, type);
+    node* temp = ll->head;
+    while(temp->next != NULL){
+        temp = temp->next;
+    }
+    temp->next = n;
+    n->next;
 }
