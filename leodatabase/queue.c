@@ -94,36 +94,3 @@ void emptyQueue(Queue* q){
     free(head);
     free(q);
 }
-
-
-
-int main(){
-    Value a, b, c, d;
-    a.i = 10;
-    Queue* q = createQueue(a, INT);
-    printf("Queue %p-q has been created the front value is: %d, and its rear value is %d\n\n", q, q->front->value.i, q->rear->value.i);
-
-
-    b.i = 20;
-    enqueue(q, b, INT);
-    printf("The front value is %d, and the rear value is %d\n\n", q->front->value.i, q->rear->value.i);
-
-    c.i = 30;
-    enqueue(q, c, INT);
-    printf("The front value is %d, and the rear value is %d\n\n", q->front->value.i, q->rear->value.i);
-
-    dequeue(q);
-    printf("The first element in the queue is now %d\n\n", q->front->value.i);
-    printf("The rear element is %d\n", q->rear->value.i);
-
-    printf("last element points to %p\n", q->rear->next);
-
-    printQueue(q);
-    printf("The address of the queue before emptying it is %p\n", q);
-    
-    emptyQueue(q);
-    printf("The address of the queue-q after emptying it is %p\n", q);
-    printf("%d\n", q->front->value.i);
-    return 0;
-
-}
