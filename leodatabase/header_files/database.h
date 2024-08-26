@@ -6,12 +6,11 @@
 #define DATABASE_H
 #include "datastructures.h"
 
-
+// function declaration for node.c
 node* createNode(value val, datatype type);
 void printNodeRepresentation(node* n);
 
-/*from linkedlist.c*/
-
+//function declaration for linekedlist.c
 unsigned int lengthofLinkedList(node *phead);
 linkedList* createLinkedList(value value, datatype type);
 void appendToLinkedList(
