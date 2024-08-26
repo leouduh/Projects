@@ -10,8 +10,7 @@ doublylinked list would use the parts needed.
 
 */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include "../header_files/database.h"
 
 typedef union value{
     int i;
@@ -32,9 +31,6 @@ typedef struct node{
    struct node* prev; 
 }node;
 
-
-node* createNode(value val, datatype type);
-void printNodeRepresentation(node* n);
 
 
 node* createNode(value val, datatype type){
