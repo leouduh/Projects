@@ -12,26 +12,6 @@ doublylinked list would use the parts needed.
 
 #include "../header_files/database.h"
 
-typedef union value{
-    int i;
-    float f;
-    char s[256];
-}value;
-
-typedef enum datatype{
-    INT,
-    FLOAT,
-    STRING,
-}datatype;
-
-typedef struct node{
-   value val;
-   datatype type;
-   struct node* next;
-   struct node* prev; 
-}node;
-
-
 
 node* createNode(value val, datatype type){
     node* n = malloc(sizeof(node)* 1);

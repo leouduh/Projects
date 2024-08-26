@@ -7,13 +7,8 @@ functions to edit a linked list
 
 */
 
+#include "../header_files/datastructures.h"
 #include "../header_files/database.h"
-
-
-typedef struct linkedList{
-    node* head;
-    node* tail; 
-}linkedList; 
 
 
 linkedList* createLinkedList(value value, datatype type){

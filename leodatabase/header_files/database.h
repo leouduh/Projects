@@ -2,11 +2,13 @@
 #include <stdlib.h>
 
 
-
 #ifndef DATABASE_H
 #define DATABASE_H
+#include "datastructures.h"
+
 #include "../src/node.c"
 #include "../src/linkedlist.c"
+
 
 
 
