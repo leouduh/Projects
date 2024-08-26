@@ -1,40 +1,19 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "node.c"
+/*
+This is the core implementation of a linkedlist
+The structure for a linked list is defined here alongside
+functions to edit a linked list
 
-// typedef union Value{
-//     int i;
-//     float f;
-//     char s[64];
-// }Value;
 
-// typedef enum{
-//     INT, FLOAT, STRING
-// }datatype;
 
-// typedef struct node{
-//     datatype type;
-//     Value value;
-//     struct node* next;
-// }node;
+*/
+
+#include "../header_files/database.h"
+
 
 typedef struct linkedList{
     node* head;
     node* tail; 
 }linkedList; 
-
-
-unsigned int lengthofLinkedList(node *phead);
-linkedList* createLinkedList(value value, datatype type);
-void appendToLinkedList(
-    linkedList* ll, value val, datatype type
-    );
-void printLinkedList(linkedList* ll);
-node* popNode(node *phead);
-void modifyNode(node *phead, node *currNode, int position);
-void insertNode(node **phead, node *currNode, int position);
-void prepend(node **phead, node * currNode);
 
 
 linkedList* createLinkedList(value value, datatype type){
