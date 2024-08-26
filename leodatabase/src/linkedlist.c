@@ -46,16 +46,7 @@ node* popNode(node *phead){
     return ans;
 }
 
-unsigned int lengthofLinkedList(node *phead){
-    //Returns the length of the linked list
-    int length = 1;
-    node *temp = phead;
-    while(temp->next != NULL){
-        length++;
-        temp = temp->next;
-    }
-    return length;
-}
+
 
 void modifyNode(node *phead, node *currNode, int position){
     //modifies value of a node, this can easily be shortened.
@@ -84,6 +75,16 @@ void modifyNode(node *phead, node *currNode, int position){
         }
 }
 
+unsigned int lengthofLinkedList(node *phead){
+    //Returns the length of the linked list
+    int length = 1;
+    node *temp = phead;
+    while(temp->next != NULL){
+        length++;
+        temp = temp->next;
+    }
+    return length;
+}
 
 void insertNode(node **pphead, node *currNode, int position){
     //Inserts Node in position of linked list and right shifts linked list 

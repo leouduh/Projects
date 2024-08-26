@@ -6,11 +6,6 @@
 #define DATABASE_H
 #include "datastructures.h"
 
-#include "../src/node.c"
-#include "../src/linkedlist.c"
-
-
-
 
 node* createNode(value val, datatype type);
 void printNodeRepresentation(node* n);
@@ -29,6 +24,7 @@ void insertNode(node **phead, node *currNode, int position);
 void prepend(node **phead, node * currNode);
 
 
-
+#include "../src/node.c"
+#include "../src/linkedlist.c"
 
 #endif
