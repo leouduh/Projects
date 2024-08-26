@@ -16,7 +16,7 @@ doublylinked list would use the parts needed.
 typedef union value{
     int i;
     float f;
-    char* s;
+    char s[256];
 }value;
 
 typedef enum datatype{
